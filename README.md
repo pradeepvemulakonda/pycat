@@ -1,1 +1,1 @@
-https://www.tutorialkart.com/opennlp/pos-tagger-example-in-apache-opennlp/
+NLP and Deep Learning samples

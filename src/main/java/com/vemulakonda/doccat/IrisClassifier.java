@@ -44,26 +44,29 @@ public class IrisClassifier {
 
         allData.shuffle(42);
 
+
         DataNormalization normalizer = new NormalizerStandardize();
         normalizer.fit(allData);
         normalizer.transform(allData);
 
-        SplitTestAndTrain testAndTrain = allData.splitTestAndTrain(0.65);
+        SplitTestAndTrain testAndTrain = allData.splitTestAndTrain(0.70);
         DataSet trainingData = testAndTrain.getTrain();
         DataSet testData = testAndTrain.getTest();
 
         MultiLayerConfiguration configuration = new NeuralNetConfiguration.Builder()
-                .iterations(1000)
+                .iterations(500)
                 .activation(Activation.TANH)
                 .weightInit(WeightInit.XAVIER)
                 .learningRate(0.1)
-                .regularization(true).l2(0.0001)
+                .regularization(true).l2(0.0002)
                 .list()
-                .layer(0, new DenseLayer.Builder().nIn(FEATURES_COUNT).nOut(3)
+                .layer(0, new DenseLayer.Builder().nIn(FEATURES_COUNT).nOut(4)
                         .build())
-                .layer(1, new DenseLayer.Builder().nIn(3).nOut(3)
+                .layer(1, new DenseLayer.Builder().nIn(4).nOut(4)
                         .build())
-                .layer(2, new OutputLayer.Builder(LossFunctions.LossFunction.NEGATIVELOGLIKELIHOOD)
+                .layer(2, new DenseLayer.Builder().nIn(4).nOut(3)
+                        .build())
+                .layer(3, new OutputLayer.Builder(LossFunctions.LossFunction.NEGATIVELOGLIKELIHOOD)
                         .activation(Activation.SOFTMAX)
                         .nIn(3).nOut(CLASSES_COUNT).build())
                 .backprop(true).pretrain(false)
